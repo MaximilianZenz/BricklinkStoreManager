@@ -1,0 +1,58 @@
+.mdl-textfield-100{
+  width: 100%;
+}
+
+.mdl-tabs__tab-bar-fixed{
+  position: fixed;
+  width: 100%;
+  background: white;
+  z-index: 999;
+  top: 0;
+}
+
+.component-card-full{
+  position: inherit;
+  display: inline-block;
+  margin-bottom: 1rem;
+  width: 100%;
+  z-index: 1;
+}
+.component-card-half{
+  position: inherit;
+  display: inline-block;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  width: calc(50% - 1.5rem);
+  z-index: 1;
+}
+
+.mdl-button--colored-red{
+  color: #ff3b30!important;
+}
+
+.overflow-visible{
+  overflow: visible!important;
+}
+
+.mdl-card__title{
+  padding: 0!important;
+  height: 3rem!important;
+  align-items: center!important;
+  background: rgb(105,240,174);
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+.mdl-card__title-text{
+  -webkit-align-self: unset!important;
+  align-self: unset!important;
+}
+
+.mdl-menu{
+  max-height: 10rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border: 1px solid lightgray;
+  border-radius: 0 0 0.2rem 0.2rem;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+
+}
