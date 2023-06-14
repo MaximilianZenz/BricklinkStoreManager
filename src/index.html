@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bricklink Store Manager</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="./mdl/material.min.css">
+    <link rel="stylesheet" href="css/mdlUpdates.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/settings.css">
+
+    <script src="js/bricklinkAPI.js"></script>
+    <script src="mdl/material.js"></script>
+    <script src="js/pdfCreation.js"></script>
+    <script src="js/billEditor.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/billDB.js"></script>
+    <script src="js/lang.js"></script>
+
+    <!--LOAD LANG FILES-->
+    <script src="lang/en.js"></script>
+    <script src="lang/ger.js"></script>
+  </head>
+  <body>
+
+    <dialog class="mdl-dialog">
+      <h4 class="mdl-dialog__title" id="dialog_headline"></h4>
+      <div class="mdl-dialog__content">
+        <p id="dialog_message">
+
+        </p>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close">OK</button>
+      </div>
+    </dialog>
+
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+      <div class="mdl-tabs__tab-bar mdl-tabs__tab-bar-fixed">
+        <a href="#order-panel" class="mdl-tabs__tab is-active"><span id="ordersBadge"><span id="mainMenuOrders">Orders</span></span></a>
+        <a href="#bill-editor-panel" class="mdl-tabs__tab" onclick="renderBillEditor()"><span id="mainMenuBillEditor">Bill Editor</span></a>
+        <a href="#settings-panel" class="mdl-tabs__tab"><span id="mainMenuSettings">Settings</span></a>
+      </div>
+
+      <div class="mdl-tabs__panel is-active" id="order-panel">
+
+      </div>
+
+      <div class="mdl-tabs__panel" id="bill-editor-panel">
+
+      </div>
+
+      <div class="mdl-tabs__panel" id="settings-panel">
+      </div>
+    </div>
+  </body>
+  <script src="js/main.js"></script>
+</html>
