@@ -23,18 +23,7 @@ function createBillPDF() {
 
                     let billNR = getBillNR(selectedOrder.data);
                     console.log(billNR)
-                    let itemTable = {
-                        body: [
-                            [{text:window.language.billItemNumber, style: 'tableHeader'}, {text:window.language.billItemName, style: 'tableHeader'}, {text:window.language.billItemColor, style: 'tableHeader'},{text:window.language.billItemPriceSingle, style: 'tableHeader'},{text:window.language.billItemAmount, style: 'tableHeader'},{text:window.language.price, style: 'tableHeader'}]
-                        ]
-                    }
-                    for (const items of selectedOrder.data.itemStore) {
-                        for (const item of items) {
-                            itemTable.body.push([item.item.no,item.item.name,item.color_name,""+item.unit_price_final+" "+item.currency_code,item.quantity,""+(roundTwoDigits(item.quantity * item.unit_price_final))+" "+item.currency_code])
-                        }
-                    }
 
-                    console.log(itemTable)
 
                     let document = {content:[""],
                         styles: {
@@ -53,8 +42,11 @@ function createBillPDF() {
                         },
                         tableHeader: {
                             bold: true,
-                                fontSize: 13,
-                                color: 'black'
+                            fontSize: 13,
+                            color: 'black'
+                        },
+                        tableContentRight: {
+                            alignment:"right"
                         },
                     }}
 
@@ -84,27 +76,108 @@ function createBillPDF() {
                                     break;
                             }
                         }else{
-                            switch (component.type) {
-                                case "TEXT":
-                                    insertTextComponent(document.content,component);
-                                    break;
-                                case "TABLE":
-                                    document.content.push({
-                                        style: 'items',
-                                        table: {
-                                            headerRows: 1,
-                                            widths: ['15%', '35%', '15%', '15%', '10%', '10%'],
-                                            body: itemTable.body
-                                        }
-                                    });
-                                    break;
-                                case "IMAGE":
-                                    document.content.push({
-                                        image: fs.existsSync(window.dataPath+"/logo.png")? window.dataPath+"/logo.png": fs.existsSync(window.dataPath+"/logo.jpeg")? window.dataPath+"/logo.jpeg":__dirname+"/resources/noImage-01.png",
-                                        fit: [100, 100],
-                                        alignment: component.settings.alignment,
-                                    })
-                                    break;
+
+                            let tableHeader = []
+                            if(component.settings['position-active']){
+                                tableHeader.push({text:window.language.billItemPosition, style: 'tableHeader'})
+                            }
+                            if(component.settings['itemNumber-active']){
+                                tableHeader.push({text:window.language.billItemNumber, style: 'tableHeader'})
+                            }
+                            if(component.settings['itemName-active']){
+                                tableHeader.push({text:window.language.billItemName, style: 'tableHeader'})
+                            }
+                            if(component.settings['itemColor-active']) {
+                                tableHeader.push({text: window.language.billItemColor, style: 'tableHeader'})
+                            }
+                            if(component.settings['amount-active']){
+                                tableHeader.push({text:window.language.billItemAmount, style: 'tableHeader'})
+                            }
+                            if(component.settings['priceSingle-active']) {
+                                tableHeader.push({text: window.language.billItemPriceSingle, style: 'tableHeader'})
+                            }
+                            if(component.settings['price-active']){
+                                tableHeader.push({text:window.language.price, style: 'tableHeader'})
+                            }
+
+                            let itemTable = {
+                                body: [
+                                    tableHeader
+                                ]
+                            }
+                            for (const items of selectedOrder.data.itemStore) {
+                                let position =0;
+                                for (const item of items) {
+                                    let tableRow = []
+                                    position++;
+                                    if(component.settings['position-active']){
+                                        tableRow.push(position)
+                                    }
+                                    if(component.settings['itemNumber-active']){
+                                        tableRow.push(item.item.no)
+                                    }
+                                    if(component.settings['itemName-active']){
+                                        tableRow.push(item.item.name)
+                                    }
+                                    if(component.settings['itemColor-active']){
+                                        tableRow.push(item.color_name)
+                                    }
+                                    if(component.settings['amount-active']){
+                                        tableRow.push(item.quantity)
+                                    }
+                                    if(component.settings['priceSingle-active']){
+                                        tableRow.push({text:""+item.unit_price_final+" "+item.currency_code, style: 'tableContentRight'})
+                                    }
+                                    if(component.settings['price-active']){
+                                        tableRow.push({text:""+(roundTwoDigits(item.quantity * item.unit_price_final))+" "+item.currency_code, style: 'tableContentRight'})
+                                    }
+
+                                    itemTable.body.push(tableRow)
+                                }
+                            }
+
+                            console.log(itemTable)
+
+                            if(component.type==="TEXT") {
+                                insertTextComponent(document.content,component);
+
+                            }else if (component.type==="TABLE") {
+                                let table = {
+                                        headerRows: 1,
+                                        widths: [],
+                                        body: itemTable.body
+                                };
+                                if(component.settings['position-active']){
+                                    table.widths.push(parseInt(component.settings['position-width-value']||0)+"%")
+                                }
+                                if(component.settings['itemNumber-active']){
+                                    table.widths.push(parseInt(component.settings['itemNumber-width-value']||0)+"%")
+                                }
+                                if(component.settings['itemName-active']){
+                                    table.widths.push(parseInt(component.settings['itemName-width-value']||0)+"%")
+                                }
+                                if(component.settings['itemColor-active']){
+                                    table.widths.push(parseInt(component.settings['itemColor-width-value']||0)+"%")
+                                }
+                                if(component.settings['amount-active']){
+                                    table.widths.push(parseInt(component.settings['amount-width-value']||0)+"%")
+                                }
+                                if(component.settings['priceSingle-active']){
+                                    table.widths.push(parseInt(component.settings['priceSingle-width-value']||0)+"%")
+                                }
+                                if(component.settings['price-active']){
+                                    table.widths.push(parseInt(component.settings['price-width-value']||0)+"%")
+                                }
+                                document.content.push({
+                                    style: 'items',
+                                    table:table
+                                });
+                            }else if (component.type==="IMAGE") {
+                                document.content.push({
+                                    image: fs.existsSync(window.dataPath+"/logo.png")? window.dataPath+"/logo.png": fs.existsSync(window.dataPath+"/logo.jpeg")? window.dataPath+"/logo.jpeg":__dirname+"/resources/noImage-01.png",
+                                    fit: [100, 100],
+                                    alignment: component.settings.alignment,
+                                })
                             }
                         }
 

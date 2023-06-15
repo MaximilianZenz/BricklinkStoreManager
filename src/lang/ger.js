@@ -83,6 +83,9 @@ const lang_de ={
     billEditorStyleDateTimeDateOnlyEuropean:"DD.MM.YYYY",
     billEditorStyleDateTimeDateOnlyUS:"MM.DD.YYYY",
 
+    billEditorWidthLabel:"Spaltenbreite in %",
+    billEditorNotANumber:"Eingabe ist keine Zahl!",
+
     //Bill
     billItemPosition:"Pos.",
     billItemNumber:"Art-Nr.",

@@ -21,19 +21,6 @@ function createBillPDF() {
                 if (!res.canceled) {
                     var billNR = getBillNR(selectedOrder.data);
                     console.log(billNR);
-                    var itemTable = {
-                        body: [
-                            [{ text: window.language.billItemNumber, style: 'tableHeader' }, { text: window.language.billItemName, style: 'tableHeader' }, { text: window.language.billItemColor, style: 'tableHeader' }, { text: window.language.billItemPriceSingle, style: 'tableHeader' }, { text: window.language.billItemAmount, style: 'tableHeader' }, { text: window.language.price, style: 'tableHeader' }]
-                        ]
-                    };
-                    for (var _i = 0, _a = selectedOrder.data.itemStore; _i < _a.length; _i++) {
-                        var items = _a[_i];
-                        for (var _b = 0, items_1 = items; _b < items_1.length; _b++) {
-                            var item = items_1[_b];
-                            itemTable.body.push([item.item.no, item.item.name, item.color_name, "" + item.unit_price_final + " " + item.currency_code, item.quantity, "" + (roundTwoDigits(item.quantity * item.unit_price_final)) + " " + item.currency_code]);
-                        }
-                    }
-                    console.log(itemTable);
                     var document_1 = { content: [""],
                         styles: {
                             HEADLINE: {
@@ -53,10 +40,13 @@ function createBillPDF() {
                                 bold: true,
                                 fontSize: 13,
                                 color: 'black'
+                            },
+                            tableContentRight: {
+                                alignment: "right"
                             }
                         } };
-                    for (var _c = 0, _d = window.billTemplate.components.sort(function (c1, c2) { return c1.row - c2.row; }); _c < _d.length; _c++) {
-                        var component = _d[_c];
+                    for (var _i = 0, _a = window.billTemplate.components.sort(function (c1, c2) { return c1.row - c2.row; }); _i < _a.length; _i++) {
+                        var component = _a[_i];
                         if (component.columns === true) {
                             if (!document_1.content[document_1.content.length - 1].hasOwnProperty("columns")) {
                                 document_1.content.push({
@@ -84,27 +74,106 @@ function createBillPDF() {
                             }
                         }
                         else {
-                            switch (component.type) {
-                                case "TEXT":
-                                    insertTextComponent(document_1.content, component);
-                                    break;
-                                case "TABLE":
-                                    document_1.content.push({
-                                        style: 'items',
-                                        table: {
-                                            headerRows: 1,
-                                            widths: ['15%', '35%', '15%', '15%', '10%', '10%'],
-                                            body: itemTable.body
-                                        }
-                                    });
-                                    break;
-                                case "IMAGE":
-                                    document_1.content.push({
-                                        image: fs.existsSync(window.dataPath + "/logo.png") ? window.dataPath + "/logo.png" : fs.existsSync(window.dataPath + "/logo.jpeg") ? window.dataPath + "/logo.jpeg" : __dirname + "/resources/noImage-01.png",
-                                        fit: [100, 100],
-                                        alignment: component.settings.alignment
-                                    });
-                                    break;
+                            var tableHeader = [];
+                            if (component.settings['position-active']) {
+                                tableHeader.push({ text: window.language.billItemPosition, style: 'tableHeader' });
+                            }
+                            if (component.settings['itemNumber-active']) {
+                                tableHeader.push({ text: window.language.billItemNumber, style: 'tableHeader' });
+                            }
+                            if (component.settings['itemName-active']) {
+                                tableHeader.push({ text: window.language.billItemName, style: 'tableHeader' });
+                            }
+                            if (component.settings['itemColor-active']) {
+                                tableHeader.push({ text: window.language.billItemColor, style: 'tableHeader' });
+                            }
+                            if (component.settings['amount-active']) {
+                                tableHeader.push({ text: window.language.billItemAmount, style: 'tableHeader' });
+                            }
+                            if (component.settings['priceSingle-active']) {
+                                tableHeader.push({ text: window.language.billItemPriceSingle, style: 'tableHeader' });
+                            }
+                            if (component.settings['price-active']) {
+                                tableHeader.push({ text: window.language.price, style: 'tableHeader' });
+                            }
+                            var itemTable = {
+                                body: [
+                                    tableHeader
+                                ]
+                            };
+                            for (var _b = 0, _c = selectedOrder.data.itemStore; _b < _c.length; _b++) {
+                                var items = _c[_b];
+                                var position = 0;
+                                for (var _d = 0, items_1 = items; _d < items_1.length; _d++) {
+                                    var item = items_1[_d];
+                                    var tableRow = [];
+                                    position++;
+                                    if (component.settings['position-active']) {
+                                        tableRow.push(position);
+                                    }
+                                    if (component.settings['itemNumber-active']) {
+                                        tableRow.push(item.item.no);
+                                    }
+                                    if (component.settings['itemName-active']) {
+                                        tableRow.push(item.item.name);
+                                    }
+                                    if (component.settings['itemColor-active']) {
+                                        tableRow.push(item.color_name);
+                                    }
+                                    if (component.settings['amount-active']) {
+                                        tableRow.push(item.quantity);
+                                    }
+                                    if (component.settings['priceSingle-active']) {
+                                        tableRow.push({ text: "" + item.unit_price_final + " " + item.currency_code, style: 'tableContentRight' });
+                                    }
+                                    if (component.settings['price-active']) {
+                                        tableRow.push({ text: "" + (roundTwoDigits(item.quantity * item.unit_price_final)) + " " + item.currency_code, style: 'tableContentRight' });
+                                    }
+                                    itemTable.body.push(tableRow);
+                                }
+                            }
+                            console.log(itemTable);
+                            if (component.type === "TEXT") {
+                                insertTextComponent(document_1.content, component);
+                            }
+                            else if (component.type === "TABLE") {
+                                var table = {
+                                    headerRows: 1,
+                                    widths: [],
+                                    body: itemTable.body
+                                };
+                                if (component.settings['position-active']) {
+                                    table.widths.push(parseInt(component.settings['position-width-value'] || 0) + "%");
+                                }
+                                if (component.settings['itemNumber-active']) {
+                                    table.widths.push(parseInt(component.settings['itemNumber-width-value'] || 0) + "%");
+                                }
+                                if (component.settings['itemName-active']) {
+                                    table.widths.push(parseInt(component.settings['itemName-width-value'] || 0) + "%");
+                                }
+                                if (component.settings['itemColor-active']) {
+                                    table.widths.push(parseInt(component.settings['itemColor-width-value'] || 0) + "%");
+                                }
+                                if (component.settings['amount-active']) {
+                                    table.widths.push(parseInt(component.settings['amount-width-value'] || 0) + "%");
+                                }
+                                if (component.settings['priceSingle-active']) {
+                                    table.widths.push(parseInt(component.settings['priceSingle-width-value'] || 0) + "%");
+                                }
+                                if (component.settings['price-active']) {
+                                    table.widths.push(parseInt(component.settings['price-width-value'] || 0) + "%");
+                                }
+                                document_1.content.push({
+                                    style: 'items',
+                                    table: table
+                                });
+                            }
+                            else if (component.type === "IMAGE") {
+                                document_1.content.push({
+                                    image: fs.existsSync(window.dataPath + "/logo.png") ? window.dataPath + "/logo.png" : fs.existsSync(window.dataPath + "/logo.jpeg") ? window.dataPath + "/logo.jpeg" : __dirname + "/resources/noImage-01.png",
+                                    fit: [100, 100],
+                                    alignment: component.settings.alignment
+                                });
                             }
                         }
                     }
