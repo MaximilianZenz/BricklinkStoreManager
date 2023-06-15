@@ -78,6 +78,8 @@ var lang_en = {
     billEditorStyleDateTimeClassic: "YYYY-MM-DD HH:MM:SS",
     billEditorStyleDateTimeDateOnlyEuropean: "DD.MM.YYYY",
     billEditorStyleDateTimeDateOnlyUS: "MM.DD.YYYY",
+    billEditorWidthLabel: "Width in %",
+    billEditorNotANumber: "Input is not a number!",
     //Bill
     billItemPosition: "Pos.",
     billItemNumber: "Item Nr.",

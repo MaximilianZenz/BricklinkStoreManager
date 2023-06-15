@@ -77,6 +77,8 @@ var lang_de = {
     billEditorStyleDateTimeClassic: "YYYY-MM-DD HH:MM:SS",
     billEditorStyleDateTimeDateOnlyEuropean: "DD.MM.YYYY",
     billEditorStyleDateTimeDateOnlyUS: "MM.DD.YYYY",
+    billEditorWidthLabel: "Spaltenbreite in %",
+    billEditorNotANumber: "Eingabe ist keine Zahl!",
     //Bill
     billItemPosition: "Pos.",
     billItemNumber: "Art-Nr.",

@@ -69,3 +69,8 @@ h2{
   flex-wrap: wrap;
 }
 
+.billEditorCheckboxLabel{
+  width: fit-content !important;
+  padding-right: 1rem !important;
+}
+

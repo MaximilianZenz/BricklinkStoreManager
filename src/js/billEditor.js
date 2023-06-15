@@ -193,6 +193,7 @@ function insertTextComponentSettings(billEditor,component){
 }
 
 function insertTableComponentSettings(billEditor,component) {
+    console.log(component);
     billEditor.innerHTML += `
         <div class="${component.columns === true ? "component-card-half" : "component-card-full"} mdl-card mdl-shadow--2dp overflow-visible">
             <div class="mdl-card__title">
@@ -208,6 +209,153 @@ function insertTableComponentSettings(billEditor,component) {
                 </ul>
             </div>
             <div class="mdl-card__supporting-text overflow-visible">
+                <div>
+                    <span>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect  billEditorCheckboxLabel" for="checkbox-position">
+                          <input type="checkbox" id="checkbox-position" class="mdl-checkbox__input" ${component.settings['position-active']?'checked':''} onclick="updateComponentSetting(${component.id},'position-active',this.checked)">
+                          <span class="mdl-checkbox__label">${window.language.billItemPosition}</span>
+                        </label>
+                    </span>
+                    <span>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input
+                                class="mdl-textfield__input"
+                                type="text"
+                                pattern="-?[0-9]*(\\.[0-9]+)?"
+                                id="textfield-position-width"
+                                value="${component.settings['position-width-value']||0}"
+                                onchange="updateComponentSetting(${component.id},'position-width-value',this.value)">
+                            <label class="mdl-textfield__label" for="textfield-position-width">${window.language.billEditorWidthLabel}</label>
+                            <span class="mdl-textfield__error">${window.language.billEditorNotANumber}</span>
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect  billEditorCheckboxLabel" for="checkbox-itemNumber">
+                          <input type="checkbox" id="checkbox-itemNumber" class="mdl-checkbox__input" ${component.settings['itemNumber-active']?'checked':''} onclick="updateComponentSetting(${component.id},'itemNumber-active',this.checked)">
+                          <span class="mdl-checkbox__label">${window.language.billItemNumber}</span>
+                        </label>
+                    </span>
+                    <span>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input
+                                class="mdl-textfield__input"
+                                type="text"
+                                pattern="-?[0-9]*(\\.[0-9]+)?"
+                                id="textfield-itemNumber-width"
+                                value="${component.settings['itemNumber-width-value']||0}"
+                                onchange="updateComponentSetting(${component.id},'itemNumber-width-value',this.value)">
+                            <label class="mdl-textfield__label" for="textfield-itemNumber-width">${window.language.billEditorWidthLabel}</label>
+                            <span class="mdl-textfield__error">${window.language.billEditorNotANumber}</span>
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect  billEditorCheckboxLabel" for="checkbox-itemName">
+                          <input type="checkbox" id="checkbox-itemName" class="mdl-checkbox__input" ${component.settings['itemName-active']?'checked':''} onclick="updateComponentSetting(${component.id},'itemName-active',this.checked)">
+                          <span class="mdl-checkbox__label">${window.language.billItemName}</span>
+                        </label>
+                    </span>
+                    <span>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input
+                                class="mdl-textfield__input"
+                                type="text"
+                                pattern="-?[0-9]*(\\.[0-9]+)?"
+                                id="textfield-itemName-width"
+                                value="${component.settings['itemName-width-value']||0}"
+                                onchange="updateComponentSetting(${component.id},'itemName-width-value',this.value)">
+                            <label class="mdl-textfield__label" for="textfield-itemName-width">${window.language.billEditorWidthLabel}</label>
+                            <span class="mdl-textfield__error">${window.language.billEditorNotANumber}</span>
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect  billEditorCheckboxLabel" for="checkbox-itemColor">
+                          <input type="checkbox" id="checkbox-itemColor" class="mdl-checkbox__input" ${component.settings['itemColor-active']?'checked':''} onclick="updateComponentSetting(${component.id},'itemColor-active',this.checked)">
+                          <span class="mdl-checkbox__label">${window.language.billItemColor}</span>
+                        </label>
+                    </span>
+                    <span>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input
+                                class="mdl-textfield__input"
+                                type="text"
+                                pattern="-?[0-9]*(\\.[0-9]+)?"
+                                id="textfield-itemColor-width"
+                                value="${component.settings['itemColor-width-value']||0}"
+                                onchange="updateComponentSetting(${component.id},'itemColor-width-value',this.value)">
+                            <label class="mdl-textfield__label" for="textfield-itemColor-width">${window.language.billEditorWidthLabel}</label>
+                            <span class="mdl-textfield__error">${window.language.billEditorNotANumber}</span>
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect  billEditorCheckboxLabel" for="checkbox-amount">
+                          <input type="checkbox" id="checkbox-amount" class="mdl-checkbox__input" ${component.settings['amount-active']?'checked':''} onclick="updateComponentSetting(${component.id},'amount-active',this.checked)">
+                          <span class="mdl-checkbox__label">${window.language.billItemAmount}</span>
+                        </label>
+                    </span>
+                    <span>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input
+                                class="mdl-textfield__input"
+                                type="text"
+                                pattern="-?[0-9]*(\\.[0-9]+)?"
+                                id="textfield-amount-width"
+                                value="${component.settings['amount-width-value']||0}"
+                                onchange="updateComponentSetting(${component.id},'amount-width-value',this.value)">
+                            <label class="mdl-textfield__label" for="textfield-amount-width">${window.language.billEditorWidthLabel}</label>
+                            <span class="mdl-textfield__error">${window.language.billEditorNotANumber}</span>
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect  billEditorCheckboxLabel" for="checkbox-priceSingle">
+                          <input type="checkbox" id="checkbox-priceSingle" class="mdl-checkbox__input" ${component.settings['priceSingle-active']?'checked':''} onclick="updateComponentSetting(${component.id},'priceSingle-active',this.checked)">
+                          <span class="mdl-checkbox__label">${window.language.billItemPriceSingle}</span>
+                        </label>
+                    </span>
+                    <span>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input
+                                class="mdl-textfield__input"
+                                type="text"
+                                pattern="-?[0-9]*(\\.[0-9]+)?"
+                                id="textfield-priceSingle-width"
+                                value="${component.settings['priceSingle-width-value']||0}"
+                                onchange="updateComponentSetting(${component.id},'priceSingle-width-value',this.value)">
+                            <label class="mdl-textfield__label" for="textfield-priceSingle-width">${window.language.billEditorWidthLabel}</label>
+                            <span class="mdl-textfield__error">${window.language.billEditorNotANumber}</span>
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect  billEditorCheckboxLabel" for="checkbox-price">
+                          <input type="checkbox" id="checkbox-price" class="mdl-checkbox__input" ${component.settings['price-active']?'checked':''} onclick="updateComponentSetting(${component.id},'price-active',this.checked)">
+                          <span class="mdl-checkbox__label">${window.language.price}</span>
+                        </label>
+                    </span>
+                    <span>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input
+                                class="mdl-textfield__input"
+                                type="text"
+                                pattern="-?[0-9]*(\\.[0-9]+)?"
+                                id="textfield-price-width"
+                                value="${component.settings['price-width-value']||0}"
+                                onchange="updateComponentSetting(${component.id},'price-width-value',this.value)">
+                            <label class="mdl-textfield__label" for="textfield-price-width">${window.language.billEditorWidthLabel}</label>
+                            <span class="mdl-textfield__error">${window.language.billEditorNotANumber}</span>
+                        </div>
+                    </span>
+                </div>
                 <span><button class="mdl-button mdl-js-button mdl-button--primary mdl-button--colored-red" onclick="deleteComponent(${component.row})">${window.language.billEditorDelete}</button></span>
                 ${(component.row!==1)?`<span><button class="mdl-button mdl-js-button mdl-button--accent" onclick="moveUpComponent(${component.id})">${window.language.billEditorMoveUp}</button></span>`:''}
                 ${(component.row!==window.billTemplate.rows)?`<span><button class="mdl-button mdl-js-button mdl-button--accent" onclick="moveDownComponent(${component.id})">${window.language.billEditorMoveDown}</button></span>`:''}
@@ -279,6 +427,7 @@ function updateBillDateTimeStyle(value){
 
 
 function updateComponentSetting(componentID, setting, value){
+
     for (const component of window.billTemplate.components) {
         if(component.id===componentID){
             component.settings[setting] = value;
