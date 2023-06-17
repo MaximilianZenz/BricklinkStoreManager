@@ -17,11 +17,15 @@ After that you can run it directly with
 
 ``npm run start``
 
-You can also create an executable for your platform by running
+or prepare the app for publishing by running
+
+``npm run make``
+
+After that you can create an executable for your platform by running
 
 ``npm run publish``
 
-Or create specific executables by running
+or create specific executables by running
 
 ``npm run publish-mac``
 
