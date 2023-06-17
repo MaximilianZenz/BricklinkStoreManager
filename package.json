@@ -9,6 +9,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish --arch=x64",
+    "publish-mac": "electron-forge publish --arch=x64 --platform darwin",
+    "publish-windows": "electron-forge publish --arch=x64 --platform win32",
     "lint": "eslint --ext .ts ."
   },
   "keywords": [],
